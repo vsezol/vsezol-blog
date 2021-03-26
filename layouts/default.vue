@@ -1,10 +1,18 @@
 <template>
   <div class="max-w-xl container mx-auto p-8">
-    <div class="text-3xl mb-4 flex">
-      <div class="text-gray-700 py-1">vsezol</div>
-      <div class="p-1">:</div>
-      <div class="bg-gray-700 text-white p-1">blog</div>
-    </div>
+    <AppLogo />
     <Nuxt />
   </div>
 </template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+import AppLogo from '~/components/ui/app-logo.vue';
+
+@Component({
+  components: {
+    AppLogo
+  }
+})
+export default class DefaultLayout extends Vue {}
+</script>
