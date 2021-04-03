@@ -1,47 +1,76 @@
 <template>
   <div>
-    <h2 class="text-xl mb-1 font-bold">{{ post.title }}</h2>
+    <h2 v-if="post.title" class="text-xl mb-1 font-bold">{{ post.title }}</h2>
 
-    <div class="flex justify-between items-center mb-1">
-      <h3 class="text-lg">{{ post.description }}</h3>
-      <div>{{ post.date }}</div>
-    </div>
+    <div>{{ post.date }}</div>
 
     <div v-if="isLongPost">
-      <p class="text-lg mb-4" v-html="formatToHtml(shortText)" />
+      <p class="preview__long text-lg mb-4" ref="textLong" v-html="postHtml" />
       <div class="flex justify-end">
-        <nuxt-link
-          :to="'popa/jopa'"
-          class="bg-gray-700 text-white text-lg py-2 px-4"
+        <button
+          @click="handleShowMore"
+          class="bg-gray-700 hover:bg-gray-600 text-white text-lg py-2 w-24"
+          style="outline: none !important"
         >
-          read more
-        </nuxt-link>
+          {{ toggleButtonText }}
+        </button>
       </div>
     </div>
+
     <div v-else>
-      <p class="text-lg" v-html="formatToHtml(post.text)" />
+      <p class="preview__short text-lg mb-4" v-html="postHtml" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Post } from '~/types/post';
+import { Post, PostTypes } from '~/types/post';
 
 @Component
 export default class PostPreview extends Vue {
-  @Prop() post!: Post;
+  @Prop() post: Post;
 
-  get isLongPost() {
-    return this.post.text.length > 300;
+  isCollapsed: boolean = true;
+
+  get urlToPost() {
+    return 'posts/' + this.post.number;
+  }
+
+  get postHtml() {
+    return this.formatToHtml(this.postText);
   }
 
   formatToHtml(text: string) {
-    return text.replace(/\n/gi, '<br />');
+    return text.replace(/\n/i, '').replace(/\n/gi, '<br />');
   }
 
-  get shortText() {
-    return this.post.text.slice(0, 300);
+  handleShowMore() {
+    const element: HTMLElement = this.$refs.textLong as HTMLElement;
+    const maxHeight = this.isCollapsed ? element.scrollHeight : 200;
+    element.style.maxHeight = maxHeight + 'px';
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  get postText() {
+    return this.post.text;
+  }
+
+  get isLongPost() {
+    return this.post.type === PostTypes.LONG;
+  }
+
+  get toggleButtonText() {
+    return this.isCollapsed ? 'expand' : 'hide';
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.preview__long {
+  display: block;
+  max-height: 200px;
+  overflow-y: hidden;
+  transition: 1s all;
+}
+</style>

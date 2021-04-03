@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(post, i) in posts" :key="i">
-      <PostPreview :post="post" />
+      <PostShort :post="post" />
       <hr class="m-8" v-if="i + 1 !== posts.length" />
     </div>
   </div>
@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 
-import PostPreview from '@/components/post/post-preview.vue';
+import PostShort from '@/components/post/post-short.vue';
 
 import { getFiles } from '~/api/get-files';
 
@@ -18,26 +18,33 @@ import { Post } from '@/types/post';
 
 @Component({
   components: {
-    PostPreview
+    PostShort
   },
   async asyncData() {
     try {
       const files = await getFiles();
 
-      const posts = files.map(file => {
-        return {
-          title: file.data.title,
-          description: file.data.description,
-          date: new Date(file.data.date).toLocaleString('en'),
-          text: file.content
-        };
-      });
+      const posts = files.map(
+        (file, i): Post => {
+          return {
+            title: file.data.title,
+            date: new Date(file.data.date).toLocaleString('en'),
+            text: file.content,
+            number: i,
+            type: file.data.type,
+            keywords: file.data?.keywords?.split(' ')
+          };
+        }
+      );
 
       return { posts };
-    } catch {}
+    } catch (e) {
+      console.log('Error while processing files with posts');
+      console.log(e)
+    }
   }
 })
 export default class Index extends Vue {
-  private posts: Post[] = [];
+  posts: Post[] = [];
 }
 </script>

@@ -40,7 +40,16 @@ export default {
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
+    icon: {
+
+    },
+    meta: {
+      title: 'vsezol:blog',
+      author: 'Vsevolod Zolotov'
+    },
     manifest: {
+      name: 'vsezol:blog about life',
+      short_name: 'vsezol:blog',
       lang: 'en'
     }
   },
@@ -52,5 +61,10 @@ export default {
         fs: 'empty'
       };
     }
+  },
+
+  server: {
+    port: 8000,
+    host: '0.0.0.0'
   }
 };
