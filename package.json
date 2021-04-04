@@ -1,6 +1,6 @@
 {
   "name": "vsezol-blog",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -12,7 +12,11 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.9.1",
     "gray-matter": "^4.0.2",

@@ -13,7 +13,8 @@
         </div>
       </AppShowMore>
 
-      <div class="flex justify-end mt-2" v-if="isLongPost">
+      <div class="flex justify-between items-center mt-2" v-if="isLongPost">
+        <AppLike />
         <AppButtonSlider
           @click="handleShowMore"
           :width="24"
@@ -42,6 +43,7 @@ import PostHeader from './post-header.vue';
 import AppKeyword from '@/components/ui/app-keyword.vue';
 import AppButtonSlider from '@/components/ui/app-button-slider.vue';
 import AppShowMore from '@/components/ui/app-show-more.vue';
+import AppLike from '@/components/ui/app-like.vue';
 
 import { calcLineHeight } from '@/modules/calc-line-height';
 
@@ -50,7 +52,8 @@ import { calcLineHeight } from '@/modules/calc-line-height';
     PostHeader,
     AppKeyword,
     AppButtonSlider,
-    AppShowMore
+    AppShowMore,
+    AppLike
   }
 })
 export default class PostShort extends Vue {
@@ -81,7 +84,7 @@ export default class PostShort extends Vue {
 
   get collapsedHeight() {
     const lineHeight = this.postLineHeight > 0 ? this.postLineHeight : 28;
-    return lineHeight * 10;
+    return lineHeight * 7;
   }
 
   get isLongPost() {
