@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 
-import PostShort from '@/components/post/post-short.vue';
+import PostShort from '~/components/post/post-short.vue';
 
 import { getFiles } from '~/api/get-files';
 

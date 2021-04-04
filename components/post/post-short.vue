@@ -11,22 +11,11 @@
       </div>
 
       <div class="flex justify-end">
-        <button
+        <AppButtonSlider
           @click="handleShowMore"
-          class="preview__btn bg-gray-700 hover:bg-gray-600 text-white text-lg py-2 h-10 w-24"
-          style="outline: none !important"
-        >
-          <transition name="btn-text-slide">
-            <div v-if="isCollapsed" class="preview__btn__text h-10 w-24">
-              expand
-            </div>
-          </transition>
-          <transition name="btn-text-slide">
-            <div v-if="!isCollapsed" class="preview__btn__text h-10 w-24">
-              hide
-            </div>
-          </transition>
-        </button>
+          :width="24"
+          :texts="['expand', 'hide']"
+        />
       </div>
     </div>
 
@@ -43,16 +32,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Post, PostTypes } from '~/types/post';
 
 import PostHeader from './post-header.vue';
 import AppKeyword from '@/components/ui/app-keyword.vue';
+import AppButtonSlider from '@/components/ui/app-button-slider.vue';
 
 @Component({
   components: {
     PostHeader,
-    AppKeyword
+    AppKeyword,
+    AppButtonSlider
   }
 })
 export default class PostShort extends Vue {
@@ -86,10 +77,6 @@ export default class PostShort extends Vue {
   get isLongPost() {
     return this.post.type === PostTypes.LONG;
   }
-
-  get toggleButtonText() {
-    return this.isCollapsed ? 'expand' : 'hide';
-  }
 }
 </script>
 
@@ -98,49 +85,6 @@ export default class PostShort extends Vue {
   display: block;
   max-height: 200px;
   overflow-y: hidden;
-  transition: 1s all;
-}
-
-.preview__btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.preview__btn__text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0%;
-}
-
-.preview__keywords::-webkit-scrollbar {
-  display: none;
-}
-
-.btn-text-slide-enter-active {
-  transition: 1s all;
-}
-
-.btn-text-slide-leave-active {
-  transition: 1s all;
-}
-
-.btn-text-slide-enter {
-  right: -100%;
-}
-
-.btn-text-slide-enter-to {
-  right: 0%;
-}
-
-.btn-text-slide-leave {
-  right: 0%;
-}
-
-.btn-text-slide-leave-to {
-  right: 100%;
+  transition: 0.5s all;
 }
 </style>
-
-<style lang="scss"></style>
