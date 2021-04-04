@@ -1,16 +1,14 @@
 <template>
   <AppButton :width="width" :height="height">
-    <div>
-      <transition v-for="slide in slides" :key="slide.index" name="btn-slide">
-        <div
-          v-if="slide.isShow"
-          :class="slideClasses"
-          @click="handleClick(slide.index)"
-        >
-          {{ slide.text }}
-        </div>
-      </transition>
-    </div>
+    <transition v-for="slide in slides" :key="slide.index" name="btn-slide">
+      <div
+        v-if="slide.isShow"
+        :class="slideClasses"
+        @click="handleClick(slide.index)"
+      >
+        {{ slide.text }}
+      </div>
+    </transition>
   </AppButton>
 </template>
 
@@ -69,17 +67,14 @@ export default class AppButtonSlider extends Vue {
 .btn-slide {
   &-enter-active,
   &-leave-active {
-    transition: 0.5s all;
+    transition: 0.75s all;
   }
 
   &-enter {
     right: -100%;
   }
 
-  &-enter-to {
-    right: 0%;
-  }
-
+  &-enter-to,
   &-leave {
     right: 0%;
   }

@@ -3,14 +3,17 @@
     <PostHeader :post="post" />
 
     <div v-if="isLongPost">
-      <div class="preview__long" ref="textLong">
-        <p class="text-lg mb-4" v-html="postHtml" />
-        <div class="preview__keywords overflow-x-auto flex mt-2">
+      <AppShowMore
+        :isCollapsed="isCollapsed"
+        :collapsedHeight="collapsedHeight"
+      >
+        <p class="text-lg mb-4" v-html="postHtml" ref="text" />
+        <div class="keywords overflow-x-auto flex mt-2">
           <AppKeyword v-for="(kw, i) in post.keywords" :value="kw" :key="i" />
         </div>
-      </div>
+      </AppShowMore>
 
-      <div class="flex justify-end">
+      <div class="flex justify-end mt-2" v-if="isLongPost">
         <AppButtonSlider
           @click="handleShowMore"
           :width="24"
@@ -38,18 +41,23 @@ import { Post, PostTypes } from '~/types/post';
 import PostHeader from './post-header.vue';
 import AppKeyword from '@/components/ui/app-keyword.vue';
 import AppButtonSlider from '@/components/ui/app-button-slider.vue';
+import AppShowMore from '@/components/ui/app-show-more.vue';
+
+import { calcLineHeight } from '@/modules/calc-line-height';
 
 @Component({
   components: {
     PostHeader,
     AppKeyword,
-    AppButtonSlider
+    AppButtonSlider,
+    AppShowMore
   }
 })
 export default class PostShort extends Vue {
   @Prop() post!: Post;
 
   isCollapsed: boolean = true;
+  postLineHeight: number = 0;
 
   get urlToPost() {
     return 'posts/' + this.post.number;
@@ -68,23 +76,29 @@ export default class PostShort extends Vue {
   }
 
   handleShowMore() {
-    const element: HTMLElement = this.$refs.textLong as HTMLElement;
-    const maxHeight = this.isCollapsed ? element.scrollHeight : 200;
-    element.style.maxHeight = maxHeight + 'px';
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  get collapsedHeight() {
+    const lineHeight = this.postLineHeight > 0 ? this.postLineHeight : 28;
+    return lineHeight * 10;
   }
 
   get isLongPost() {
     return this.post.type === PostTypes.LONG;
   }
+
+  mounted() {
+    const element: HTMLElement = this.$refs.text as HTMLElement;
+    if (element) {
+      this.postLineHeight = calcLineHeight(element);
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.preview__long {
-  display: block;
-  max-height: 200px;
-  overflow-y: hidden;
-  transition: 0.5s all;
+.keywords::-webkit-scrollbar {
+  display: none;
 }
 </style>

@@ -2,7 +2,7 @@
   <div>
     <div v-for="(post, i) in posts" :key="i">
       <PostShort :post="post" />
-      <hr class="m-8" v-if="i + 1 !== posts.length" />
+      <hr class="my-8" v-if="i + 1 !== posts.length" />
     </div>
   </div>
 </template>
