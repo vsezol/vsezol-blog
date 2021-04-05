@@ -3,8 +3,10 @@ export interface Post {
   date: string;
   text: string;
   keywords: string[];
-  number: number;
+  id: number;
   type: PostTypes;
+  isLiked: boolean;
+  like: (value: boolean) => void;
 }
 
 export enum PostTypes {

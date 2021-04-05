@@ -8,16 +8,52 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Emit, Prop, Watch } from 'vue-property-decorator';
+import { Post } from '~/types/post';
 
 @Component
 export default class AppLike extends Vue {
-  @Prop() postId: number;
-
-  isLiked: boolean = false;
+  @Prop() isLiked: boolean;
+  @Prop() postId: boolean;
 
   handleClick() {
-    this.isLiked = !this.isLiked;
+    this.setLikeToStorage(!this.isLiked);
+    this.$emit('like', this.getLikeFromStorage());
+  }
+
+  mounted() {
+    this.$emit('like', this.getLikeFromStorage());
+  }
+
+  getLikeFromStorage() {
+    if (!localStorage) return this.isLiked;
+
+    const postJSON = localStorage.getItem(this.postStorageKey);
+
+    if (!postJSON) return this.isLiked;
+    const post: Partial<Post> = JSON.parse(postJSON);
+
+    return post?.isLiked ?? this.isLiked;
+  }
+
+  setLikeToStorage(isLiked: boolean) {
+    if (!localStorage) return;
+
+    const postJSON = localStorage.getItem(this.postStorageKey);
+
+    let post: Partial<Post>;
+
+    if (!!postJSON) {
+      post = { ...JSON.parse(postJSON), isLiked };
+    } else {
+      post = { isLiked };
+    }
+
+    localStorage.setItem(this.postStorageKey, JSON.stringify(post));
+  }
+
+  get postStorageKey() {
+    return `post-${this.postId}`;
   }
 }
 </script>
@@ -26,7 +62,7 @@ export default class AppLike extends Vue {
 .like-smooth {
   &-enter-active,
   &-leave-active {
-    transition: 0.25s all;
+    transition: 0.1s all;
   }
 
   &-enter {

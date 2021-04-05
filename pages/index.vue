@@ -14,7 +14,11 @@ import PostShort from '~/components/post/post-short.vue';
 
 import { getFiles } from '~/api/get-files';
 
+import { PostImpl } from '@/modules/post';
+
 import { Post } from '@/types/post';
+
+type PostPOJO = Omit<Post, 'like' | 'isLiked'>;
 
 @Component({
   components: {
@@ -25,12 +29,12 @@ import { Post } from '@/types/post';
       const files = await getFiles();
 
       const posts = files.map(
-        (file, i): Post => {
+        (file, i): PostPOJO => {
           return {
             title: file.data.title,
             date: new Date(file.data.date).toLocaleString('en'),
             text: file.content,
-            number: i,
+            id: i,
             type: file.data.type,
             keywords: file.data?.keywords?.split(' ')
           };
@@ -40,11 +44,15 @@ import { Post } from '@/types/post';
       return { posts };
     } catch (e) {
       console.log('Error while processing files with posts');
-      console.log(e)
+      console.log(e);
     }
   }
 })
 export default class Index extends Vue {
-  posts: Post[] = [];
+  posts: Post[] | PostPOJO[] = [];
+
+  created() {
+    this.posts = this.posts.map((p: PostPOJO) => new PostImpl(p));
+  }
 }
 </script>

@@ -12,15 +12,6 @@
           <AppKeyword v-for="(kw, i) in post.keywords" :value="kw" :key="i" />
         </div>
       </AppShowMore>
-
-      <div class="flex justify-between items-center mt-2" v-if="isLongPost">
-        <AppLike />
-        <AppButtonSlider
-          @click="handleShowMore"
-          :width="24"
-          :texts="['expand', 'hide']"
-        />
-      </div>
     </div>
 
     <div v-else>
@@ -31,6 +22,16 @@
       <div class="preview__keywords overflow-x-auto flex mt-2">
         <AppKeyword v-for="(kw, i) in post.keywords" :value="kw" :key="i" />
       </div>
+    </div>
+
+    <div class="flex justify-between items-center mt-2">
+      <AppLike @like="handleLike" :isLiked="post.isLiked" :postId="post.id" />
+      <AppButtonSlider
+        v-if="isLongPost"
+        @click="handleShowMore"
+        :width="24"
+        :texts="['expand', 'hide']"
+      />
     </div>
   </div>
 </template>
@@ -62,10 +63,6 @@ export default class PostShort extends Vue {
   isCollapsed: boolean = true;
   postLineHeight: number = 0;
 
-  get urlToPost() {
-    return 'posts/' + this.post.number;
-  }
-
   get postHtml() {
     return this.formatToHtml(this.postText);
   }
@@ -96,6 +93,10 @@ export default class PostShort extends Vue {
     if (element) {
       this.postLineHeight = calcLineHeight(element);
     }
+  }
+
+  handleLike(value: boolean) {
+    this.post.like(value);
   }
 }
 </script>
