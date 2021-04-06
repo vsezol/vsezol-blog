@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(post, i) in posts" :key="i">
-      <PostShort :post="post" />
+      <AppPost :post="post" />
       <hr class="my-8" v-if="i + 1 !== posts.length" />
     </div>
   </div>
@@ -10,9 +10,9 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 
-import PostShort from '~/components/post/post-short.vue';
+import AppPost from '@/components/post/app-post.vue';
 
-import { getFiles } from '~/api/get-files';
+import { getFiles } from '@/api/get-files';
 
 import { PostImpl } from '@/modules/post';
 
@@ -22,7 +22,7 @@ type PostPOJO = Omit<Post, 'like' | 'isLiked'>;
 
 @Component({
   components: {
-    PostShort
+    AppPost
   },
   async asyncData() {
     try {

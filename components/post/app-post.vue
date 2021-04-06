@@ -2,30 +2,24 @@
   <div>
     <PostHeader :post="post" />
 
-    <div v-if="isLongPost">
-      <AppShowMore
-        :isCollapsed="isCollapsed"
-        :collapsedHeight="collapsedHeight"
-      >
-        <p class="text-lg mb-4" v-html="postHtml" ref="text" />
-        <div class="keywords overflow-x-auto flex mt-2">
-          <AppKeyword v-for="(kw, i) in post.keywords" :value="kw" :key="i" />
-        </div>
-      </AppShowMore>
-    </div>
-
-    <div v-else>
+    <component
+      :is="wrapperName"
+      :isCollapsed="isCollapsed"
+      :collapsedHeight="collapsedHeight"
+    >
       <p
-        :class="['preview__short', 'mb-4', post.title ? 'text-lg' : 'text-xl']"
+        :class="['mb-4', post.title ? 'text-lg' : 'text-xl']"
         v-html="postHtml"
       />
-      <div class="preview__keywords overflow-x-auto flex mt-2">
+
+      <AppKeywordsGroup class="mt-2">
         <AppKeyword v-for="(kw, i) in post.keywords" :value="kw" :key="i" />
-      </div>
-    </div>
+      </AppKeywordsGroup>
+    </component>
 
     <div class="flex justify-between items-center mt-2">
       <AppLike @like="handleLike" :isLiked="post.isLiked" :postId="post.id" />
+
       <AppButtonSlider
         v-if="isLongPost"
         @click="handleShowMore"
@@ -38,13 +32,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Post, PostTypes } from '~/types/post';
+import { Post, PostTypes } from '@/types/post';
 
 import PostHeader from './post-header.vue';
 import AppKeyword from '@/components/ui/app-keyword.vue';
 import AppButtonSlider from '@/components/ui/app-button-slider.vue';
 import AppShowMore from '@/components/ui/app-show-more.vue';
 import AppLike from '@/components/ui/app-like.vue';
+import AppKeywordsGroup from '@/components/ui/app-keywords-group.vue';
 
 import { calcLineHeight } from '@/modules/calc-line-height';
 
@@ -52,16 +47,24 @@ import { calcLineHeight } from '@/modules/calc-line-height';
   components: {
     PostHeader,
     AppKeyword,
+    AppKeywordsGroup,
     AppButtonSlider,
     AppShowMore,
     AppLike
   }
 })
-export default class PostShort extends Vue {
+export default class AppPost extends Vue {
   @Prop() post!: Post;
 
   isCollapsed: boolean = true;
   postLineHeight: number = 0;
+
+  mounted() {
+    const element: HTMLElement = this.$refs.text as HTMLElement;
+    if (element) {
+      this.postLineHeight = calcLineHeight(element);
+    }
+  }
 
   get postHtml() {
     return this.formatToHtml(this.postText);
@@ -88,11 +91,8 @@ export default class PostShort extends Vue {
     return this.post.type === PostTypes.LONG;
   }
 
-  mounted() {
-    const element: HTMLElement = this.$refs.text as HTMLElement;
-    if (element) {
-      this.postLineHeight = calcLineHeight(element);
-    }
+  get wrapperName() {
+    return this.isLongPost ? 'AppShowMore' : 'div';
   }
 
   handleLike(value: boolean) {
@@ -100,9 +100,3 @@ export default class PostShort extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.keywords::-webkit-scrollbar {
-  display: none;
-}
-</style>
