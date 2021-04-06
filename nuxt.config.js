@@ -67,7 +67,7 @@ export default {
         fs: 'empty'
       };
     }
-  },
+  }
 
   // server: {
   //   port: 8000,

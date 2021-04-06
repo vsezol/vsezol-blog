@@ -1,5 +1,5 @@
 <template>
-  <div @click="handleClick" class="text-4xl text-gray-700 cursor-pointer">
+  <div @click="handleClick" class="text-2xl text-gray-700 cursor-pointer">
     <transition name="like-smooth" mode="out-in">
       <fa v-if="isLiked" :icon="['fas', 'heart']" key="fas" />
       <fa v-if="!isLiked" :icon="['far', 'heart']" key="far" />
@@ -8,8 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Emit, Prop, Watch } from 'vue-property-decorator';
-import { Post } from '~/types/post';
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class AppLike extends Vue {
@@ -17,43 +16,39 @@ export default class AppLike extends Vue {
   @Prop() postId: boolean;
 
   handleClick() {
-    this.setLikeToStorage(!this.isLiked);
-    this.$emit('like', this.getLikeFromStorage());
+    this.setIsLikedToStorage(!this.isLiked);
+    this.emitLike();
   }
 
   mounted() {
-    this.$emit('like', this.getLikeFromStorage());
+    this.emitLike();
+  }
+
+  @Emit('like')
+  emitLike() {
+    return this.getLikeFromStorage();
   }
 
   getLikeFromStorage() {
     if (!localStorage) return this.isLiked;
 
-    const postJSON = localStorage.getItem(this.postStorageKey);
+    const isLikedJSON = localStorage.getItem(this.likeStorageKey);
 
-    if (!postJSON) return this.isLiked;
-    const post: Partial<Post> = JSON.parse(postJSON);
+    if (!isLikedJSON) return this.isLiked;
 
-    return post?.isLiked ?? this.isLiked;
+    const isLiked: boolean = JSON.parse(isLikedJSON);
+
+    return isLiked ?? this.isLiked;
   }
 
-  setLikeToStorage(isLiked: boolean) {
+  setIsLikedToStorage(isLiked: boolean) {
     if (!localStorage) return;
 
-    const postJSON = localStorage.getItem(this.postStorageKey);
-
-    let post: Partial<Post>;
-
-    if (!!postJSON) {
-      post = { ...JSON.parse(postJSON), isLiked };
-    } else {
-      post = { isLiked };
-    }
-
-    localStorage.setItem(this.postStorageKey, JSON.stringify(post));
+    localStorage.setItem(this.likeStorageKey, JSON.stringify(isLiked));
   }
 
-  get postStorageKey() {
-    return `post-${this.postId}`;
+  get likeStorageKey() {
+    return `post-like-${this.postId}`;
   }
 }
 </script>

@@ -34,7 +34,7 @@ export default class PostPreview extends Vue {
   isCollapsed: boolean = true;
 
   get urlToPost() {
-    return 'posts/' + this.post.number;
+    return 'posts/' + this.post.id;
   }
 
   get postHtml() {
