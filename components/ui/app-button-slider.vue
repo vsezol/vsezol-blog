@@ -29,7 +29,6 @@ export default class AppButtonSlider extends Vue {
 
   currentIndex: number = 0;
 
-  @Emit('click')
   handleClick(index: number) {
     this.currentIndex = index;
 
@@ -37,7 +36,7 @@ export default class AppButtonSlider extends Vue {
       ? (this.currentIndex = 0)
       : (this.currentIndex = index + 1);
 
-    return [this.texts[index], index];
+    this.$emit('click', this.texts[index], index);
   }
 
   get slides() {
