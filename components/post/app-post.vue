@@ -12,9 +12,9 @@
         v-html="postHtml"
       />
 
-      <AppKeywordsGroup class="mt-2">
+      <AppKeywordGroup class="mt-2">
         <AppKeyword v-for="(kw, i) in post.keywords" :value="kw" :key="i" />
-      </AppKeywordsGroup>
+      </AppKeywordGroup>
     </component>
 
     <div class="flex justify-between items-center mt-2">
@@ -35,11 +35,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Post, PostTypes } from '@/types/post';
 
 import PostHeader from './post-header.vue';
-import AppKeyword from '@/components/ui/app-keyword.vue';
 import AppButtonSlider from '@/components/ui/app-button-slider.vue';
 import AppShowMore from '@/components/ui/app-show-more.vue';
 import AppLike from '@/components/ui/app-like.vue';
-import AppKeywordsGroup from '@/components/ui/app-keywords-group.vue';
+import {AppKeyword, AppKeywordGroup } from '@/components/ui';
 
 import { calcLineHeight } from '@/modules/calc-line-height';
 
@@ -47,7 +46,7 @@ import { calcLineHeight } from '@/modules/calc-line-height';
   components: {
     PostHeader,
     AppKeyword,
-    AppKeywordsGroup,
+    AppKeywordGroup,
     AppButtonSlider,
     AppShowMore,
     AppLike

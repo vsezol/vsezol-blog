@@ -1,7 +1,7 @@
 import { shallowMount, Wrapper } from '@vue/test-utils';
 import AppButtonSlider from './app-button-slider.vue';
 
-describe('components/ui/app-logo.vue', () => {
+describe('components/ui/app-button-slider.vue', () => {
   let FAKE_TEXTS = ['fake_1', 'fake_2'];
   let wrapper: Wrapper<AppButtonSlider>;
 
@@ -23,8 +23,8 @@ describe('components/ui/app-logo.vue', () => {
     expect(btn?.exists()).toBe(true);
   });
 
-  it('change button text when click', () => {
-    clickBtn(FAKE_TEXTS[0]);
+  it('change button text when click', async () => {
+    await clickBtn(FAKE_TEXTS[0]);
 
     const newBtn = findBtn(FAKE_TEXTS[1]);
 
@@ -43,7 +43,6 @@ describe('components/ui/app-logo.vue', () => {
 
   async function clickBtn(text: string) {
     const btn = findBtn(text);
-    console.log(wrapper.html());
 
     btn?.trigger('click');
 
