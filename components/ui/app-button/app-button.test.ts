@@ -1,7 +1,7 @@
 import { shallowMount, Wrapper } from '@vue/test-utils';
 import { AppButton } from '@/components/ui';
 
-describe('components/ui/app-button.vue', () => {
+describe('components/ui/app-button', () => {
   const FAKE_TEXT = 'fake_text';
   let wrapper: Wrapper<AppButton>;
 

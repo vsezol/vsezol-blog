@@ -1,7 +1,7 @@
 import { shallowMount, Wrapper } from '@vue/test-utils';
 import AppButtonSlider from './app-button-slider.vue';
 
-describe('components/ui/app-button-slider.vue', () => {
+describe('components/ui/app-button-slider', () => {
   let FAKE_TEXTS = ['fake_1', 'fake_2'];
   let wrapper: Wrapper<AppButtonSlider>;
 

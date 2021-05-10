@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-import AppButton from '@/components/ui/app-button.vue';
+import { AppButton } from '@/components/ui';
 
 @Component({
   components: {

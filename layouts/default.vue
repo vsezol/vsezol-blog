@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import AppLogo from '~/components/ui/app-logo.vue';
+import { AppLogo } from '@/components/ui';
 
 @Component({
   components: {

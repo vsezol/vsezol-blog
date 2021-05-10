@@ -35,10 +35,14 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Post, PostTypes } from '@/types/post';
 
 import PostHeader from './post-header.vue';
-import AppButtonSlider from '@/components/ui/app-button-slider.vue';
-import AppShowMore from '@/components/ui/app-show-more.vue';
-import AppLike from '@/components/ui/app-like.vue';
-import {AppKeyword, AppKeywordGroup } from '@/components/ui';
+
+import {
+  AppKeyword,
+  AppKeywordGroup,
+  AppShowMore,
+  AppLike,
+  AppButtonSlider
+} from '@/components/ui';
 
 import { calcLineHeight } from '@/modules/calc-line-height';
 

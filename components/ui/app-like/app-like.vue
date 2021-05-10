@@ -26,10 +26,11 @@ export default class AppLike extends Vue {
 
   @Emit('like')
   emitLike() {
-    return this.getLikeFromStorage();
+    return this.getLikeFromStorage() ?? this.isLiked;
   }
 
   getLikeFromStorage() {
+    console.log('dsdmnsdsdskndsjndjsnds', localStorage);
     if (!localStorage) return this.isLiked;
 
     const isLikedJSON = localStorage.getItem(this.likeStorageKey);
@@ -38,7 +39,7 @@ export default class AppLike extends Vue {
 
     const isLiked: boolean = JSON.parse(isLikedJSON);
 
-    return isLiked ?? this.isLiked;
+    return isLiked;
   }
 
   setIsLikedToStorage(isLiked: boolean) {

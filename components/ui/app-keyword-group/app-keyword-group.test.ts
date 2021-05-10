@@ -3,7 +3,7 @@ import { VNode, CreateElement } from 'vue';
 import { shallowMount, Wrapper } from '@vue/test-utils';
 import { AppKeywordGroup, AppKeyword } from '@/components/ui';
 
-describe('components/ui/app-keyword-group.vue', () => {
+describe('components/ui/app-keyword-group', () => {
   let wrapper: Wrapper<AppKeywordGroup>;
 
   const KEYWORDS_COUNT = 5;
